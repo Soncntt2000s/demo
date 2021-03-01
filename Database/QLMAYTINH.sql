@@ -1,0 +1,142 @@
+﻿create database QLMAYTINH
+
+USE QLMAYTINH
+GO
+---TAO TABLE KHACHHANG
+CREATE TABLE KHACHHANG
+(
+	MAKH int NOT NULL identity(1,1),
+	TENKH NVARCHAR(50) NOT NULL ,
+	PHAI nvarchar(10) NOT NULL, 
+	DIACHI NVARCHAR(100) NOT NULL,
+	SDT varchar(20) NOT NULL,
+	HinhAnh image not null,
+
+	Constraint PRK_KHACHHANG_MAKH PRIMARY KEY (MAKH)
+)
+GO
+
+---TAO TABLE NHANVIEN
+CREATE TABLE NHANVIEN
+(
+	MANV int not null  PRIMARY KEY identity(1,1) ,
+	TENHT VARCHAR(50) NOT NULL,
+	TENNV NVARCHAR(50) NOT NULL,
+	CHUCVU NVARCHAR(50) NOT NULL,
+	PHAI nvarchar(10) NOT NULL,
+	PassWord nvarCHAR(50) not null,
+	NGAYSINH DATETIME ,
+	DIACHI NVARCHAR(100) NOT NULL,
+	HinhAnh image not null
+)
+GO
+
+---TẠO TABLE MAYTINH
+CREATE TABLE MAYTINH
+(
+	MAMT int NOT NULL identity(1,1),
+	TENMT NVARCHAR(50) NOT NULL,
+	CAUHINH NVARCHAR(50) NOT NULL,
+	SOLUONG numeric not null,
+	HANGSX NVARCHAR(50) NOT NULL,
+	HinhAnh image not null,
+	MOTA NVARCHAR(1000) 
+
+	Constraint PRK_MAYTINH_MAMT PRIMARY KEY (MAMT),
+)
+GO
+
+--TAO TABLE HOADON
+CREATE TABLE HOADON
+(
+	MAHD int not null identity(1,1),
+	MAKH int NOT NULL,
+	MANV int NOT NULL,
+	NGAYLAPHD DATETIME NOT NULL,
+	NGAYGIAO DATETIME NOT NULL,
+	constraint PRK_HOADON_MAHD primary key(MAHD),
+	constraint FRK_HOADON_KHACHHANG_MAKH foreign key (MAKH) references KHACHHANG(MAKH),
+	constraint FRK_HOADON_NHANVIEN_MANV foreign key (MANV) references NHANVIEN(MANV)
+)
+GO
+
+
+--TAO TABLE CTHOADON
+CREATE TABLE CTHOADON
+(
+	MAHD int NOT NULL identity(1,1),
+	MAMT int NOT NULL ,
+	SOLUONG numeric NOT NULL,
+	DONGIABAN VARCHAR(10)
+
+	PRIMARY KEY (MAHD,MAMT),
+	FOREIGN KEY (MAMT) REFERENCES MAYTINH(MAMT),
+	FOREIGN KEY (MAHD) REFERENCES HOADON(MAHD)
+)
+GO
+
+
+--INSERT TABLE KHACHHANG
+INSERT INTO KHACHHANG VALUES (N'Phùng Quang Vinh',N'Nam',N'145 Quang Trung , Quận Gò Vấp','0928537883','PhoVanChung.jpg')
+INSERT INTO KHACHHANG VALUES (N'Nguyễn Quang Hải',N'Nam',N'15 Hà Huy Giáp , Quận 12','0922345662','H26.jpg')
+INSERT INTO KHACHHANG VALUES (N'Nguyễn Công Phượng',N'Nam',N'290 Hoàng Văn Thụ , Quận Tân Bình','02356737375','BuiNguyenPhung.jpg')
+INSERT INTO KHACHHANG VALUES (N'Lương Xuân Trường',N'Nam',N'Nha Trang','09378495025','LeThiKieuGiang.jpg')
+INSERT INTO KHACHHANG VALUES (N'Nguyễn Quỳnh NHư',N'Nữ',N'Bình Thuận','0257394750','OngThiKieuTrang.jpg')
+GO
+
+--INSERT TABLE NHANVIEN
+INSERT INTO NHANVIEN VALUES('Son',N'Nguyễn Hồng Sơn',N'Quản Lý',N'Nam',N'202cb962ac59075b964b07152d234b70','12/09/2000',N'Hậu Lộc - Thanh Hóa','PhoVanChung.jpg')
+INSERT INTO NHANVIEN VALUES('Sang',N'Đỗ Minh Sang',N'Quản Lý',N'Nam',N'202cb962ac59075b964b07152d234b70','12/04/1999',N'HoocMon - TP HCM','H26.jpg')
+INSERT INTO NHANVIEN VALUES('Giang',N'Ngô Phan Trường Giang',N'Quản Lý',N'Nam',N'202cb962ac59075b964b07152d234b70','12/02/2000',N'Gò Vấp - TP HCM','BuiNguyenPhung.jpg')
+INSERT INTO NHANVIEN VALUES('ThuyMinh',N'Trần Thị Thủy Minh',N'Nhân Viên',N'Nữ',N'202cb962ac59075b964b07152d234b70','11/11/2000',N'Bình Thạnh - TP HCM','LeThiKieuGiang.jpg')
+INSERT INTO NHANVIEN VALUES('AnhTam',N'Nguyễn Anh Tâm',N'Nhân Viên',N'Nữ',N'202cb962ac59075b964b07152d234b70','09/02/2000',N'Tân Bình - TP HCM','OngThiKieuTrang.jpg')
+GO
+
+---INSERT TABLE MAYTINH
+INSERT INTO MAYTINH VALUES (N'Asus TUF Gaming GT501',N'Đồ họa: Intel® UHD Graphics 620',5,N'ASUS','asus-s530f-i7-8565u.jpg',N'Tích hợp cổng kết nối Type C và USB 3.0 truyền dữ liệu nhanh chóng...')
+INSERT INTO MAYTINH VALUES (N'Acer Aspire A515',N'CPU: Intel Core i3 Coffee Lake, 2.10 GHz',7,N'ACER','acer-aspire-a315.jpg',N'Màn hình 15.6 inch cùng độ phân giải Full HDm tích hợp thêm công nghệ màn hình chống chói Acer ComfyView...')
+INSERT INTO MAYTINH VALUES (N'MSI Prestige PS42',N'Màn hình: 14 inch - Full HD (1920 x 1080)
+',12,N'ASUS','dell-inspiron-5584.jpg',N'Có khả năng gập 180 độ để mở rộng góc nhìn khi bị phản sáng và hạn chế gãy bản lề...')
+INSERT INTO MAYTINH VALUES (N'Lenovo Ideapad 530S',N'HĐH: Windows 10 Home SL',16,N'LENOVO','lenovo-ideapad-3.jpg',N'Có công nghệ âm thanh Dolby Audio Premium cho chất âm rõ ràng, trong trẻo và mạnh mẽ..')
+INSERT INTO MAYTINH VALUES (N'HP Envy 13 ah1010TU',N'Loại case: Mid Tower',8,N'HP','hp-envy-13.jpg',N'Khởi động mọi thứ nhanh chóng chỉ trong 10 đến 15 giây với ổ cứng SSD 128 GB...')
+INSERT INTO MAYTINH VALUES (N'Dell Vostro 3568',N'Nặng: 2.18 kg, Pin: Li-Ion 4 cell',8,N'DELL','dell-vostro-3580.jpg',N'Chip Intel Core i3 thứ hệ thứ 6 tốc độ 2.0 GHz cho hiệu năng xử lý mượt mà....')
+GO
+
+--INSERT TABLE HOADON
+INSERT INTO HOADON VALUES(1,1,'04/07/2020','05/07/2020');
+INSERT INTO HOADON VALUES(2,2,'04/06/2020','07/14/2020');
+INSERT INTO HOADON VALUES(3,3,'02/17/2020','05/06/2020');
+INSERT INTO HOADON VALUES(4,4,'11/14/2019','05/02/2020');
+INSERT INTO HOADON VALUES(5,5,'12/15/2019','02/06/2020');
+GO
+
+--INSERT TABLE CTHOADON
+INSERT INTO CTHOADON VALUES (2,4,'12000000');
+INSERT INTO CTHOADON VALUES (5,2,'11500000');
+INSERT INTO CTHOADON VALUES (3,3,'9050000');
+INSERT INTO CTHOADON VALUES (4,6,'8000000');
+INSERT INTO CTHOADON VALUES (1,5,'10000000');
+GO
+
+alter table HOADON nocheck constraint all
+alter table CTHOADON nocheck constraint all
+alter table KHACHHANG nocheck constraint all
+alter table NHANVIEN nocheck constraint all
+alter table MAYTINH nocheck constraint all
+
+
+SELECT * FROM KHACHHANG
+SELECT * FROM NHANVIEN
+SELECT * FROM MAYTINH
+SELECT * FROM HOADON
+SELECT * FROM CTHOADON
+
+
+
+select HD.MAHD,KH.TENKH,NV.TENNV,MT.TENMT,CTHD.SOLUONG,CTHD.DONGIABAN,HD.NGAYLAPHD,HD.NGAYGIAO FROM HOADON HD ,KHACHHANG KH,NHANVIEN NV ,CTHOADON CTHD,MAYTINH MT
+WHERE HD.MAKH=KH.MAKH AND HD.MANV=NV.MANV AND CTHD.MAHD=HD.MAHD AND CTHD.MAMT=MT.MAMT
+
+SELECT HD.MAHD,NV.TENNV,KH.TENKH,MT.TENMT,CTHD.SOLUONG,CTHD.DONGIABAN,HD.NGAYLAPHD,HD.NGAYGIAO FROM HOADON HD ,KHACHHANG KH,NHANVIEN NV ,CTHOADON CTHD,MAYTINH MT
+WHERE HD.MAKH=KH.MAKH AND HD.MANV=NV.MANV AND CTHD.MAHD=HD.MAHD AND CTHD.MAMT=MT.MAMT AND HD.MAHD='16'
+
+INSERT INTO HOADON () VALUES ()
